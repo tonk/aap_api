@@ -1,0 +1,21 @@
+meta {
+  name: Teams list (gateway)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/gateway/v1/teams/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Platform Gateway teams (recommended on AAP 2.6). Prefer over
+  `/api/controller/v2/teams/` for consistent synchronization with the rest of
+  the platform.
+}

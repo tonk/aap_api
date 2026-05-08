@@ -1,0 +1,21 @@
+meta {
+  name: Collection versions (plugin path)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/galaxy/v3/plugin/ansible/content/ansible/collection_versions/
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{hubToken}}
+}
+
+docs {
+  Alternate list route used by some Galaxy NG / Pulp Ansible deployments for
+  individual collection versions. Remove or adjust if your hub uses only the
+  top-level `/collections/` view.
+}

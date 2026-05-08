@@ -1,0 +1,21 @@
+meta {
+  name: Current user (EDA)
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/users/me/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  EDA **`users/me`** profile for the bearer identity. On **AAP 2.6**, treat
+  **system → Current user — gateway (me)** as the canonical platform identity;
+  this endpoint reflects EDA’s view of the same principal.
+}

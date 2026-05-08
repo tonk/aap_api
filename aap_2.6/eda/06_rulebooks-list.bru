@@ -1,0 +1,19 @@
+meta {
+  name: Rulebooks list
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/rulebooks/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Discovered rulebooks from project sources, ready to bind to activations.
+}

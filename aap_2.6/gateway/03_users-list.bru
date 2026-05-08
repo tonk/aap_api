@@ -1,0 +1,24 @@
+meta {
+  name: Users list (gateway)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/gateway/v1/users/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Platform Gateway users (recommended on AAP 2.6). Use this instead of
+  `/api/controller/v2/users/` so RBAC changes propagate without the delay that
+  legacy controller routes can introduce across platform components.
+
+  Filter examples often match Django-style lookups; confirm fields with your
+  gateway OpenAPI or browsable API.
+}

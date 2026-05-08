@@ -1,0 +1,19 @@
+meta {
+  name: Project get by ID
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/projects/{{edaProjectId}}/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Single project; `related` links point at rulebooks and other child objects.
+}

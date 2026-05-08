@@ -1,0 +1,19 @@
+meta {
+  name: Settings named URL formats
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/settings/named_url/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Read-only helper: patterns for human-readable named URLs (`job_templates`, `hosts`, …).
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Job stdout (text)
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/jobs/{{jobId}}/stdout/?format=txt_download
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Retrieves Ansible output for the job. `format` query options match controller docs
+  (`txt`, `txt_download`, `ansi`, `ansi_download`, `html`, …).
+}

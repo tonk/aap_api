@@ -1,0 +1,19 @@
+meta {
+  name: Settings — all
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/settings/all/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Full settings blob (may require elevated RBAC). Trimmed in some deployments.
+}

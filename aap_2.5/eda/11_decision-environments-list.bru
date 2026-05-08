@@ -1,0 +1,19 @@
+meta {
+  name: Decision environments list
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/decision-environments/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Execution images (rulebook runner environments) available to activations.
+}

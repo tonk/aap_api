@@ -1,0 +1,19 @@
+meta {
+  name: Rulebook get by ID
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/rulebooks/{{rulebookId}}/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Rulebook detail including rulesets and activation relationships.
+}

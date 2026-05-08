@@ -1,0 +1,39 @@
+meta {
+  name: Create hub API token (from gateway PAT)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/galaxy/v3/auth/token/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+  }
+}
+
+script:post-response {
+  const body = res.body;
+  const t = body && (body.token || body.access_token);
+  if (res.status >= 200 && res.status < 300 && t) {
+    bru.setVar("hubToken", t);
+  }
+}
+
+docs {
+  Exchanges a Platform Gateway PAT (`token` var) for a **Private Automation Hub**
+  token. The script stores it in `hubToken`. Subsequent Hub requests in this
+  collection use `Authorization: Token {{hubToken}}` (Galaxy NG style).
+
+  Run *auth/01_create-personal-access-token* first so `token` is populated.
+
+  If your Hub is on a **separate hostname**, duplicate this request with
+  `{{hubBaseUrl}}` (add that var locally) — some deployments split gateway and hub DNS.
+}

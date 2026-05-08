@@ -1,0 +1,19 @@
+meta {
+  name: Users list
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/users/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  List users visible to your account. Filter e.g. `?username__icontains=admin`.
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Namespaces list
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/galaxy/v3/namespaces/
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{hubToken}}
+}
+
+docs {
+  Collection namespaces. Galaxy NG paginates with `limit` / `offset` on many list views.
+
+  Requires `hubToken` from *Create hub API token*.
+}

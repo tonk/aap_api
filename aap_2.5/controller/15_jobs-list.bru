@@ -1,0 +1,19 @@
+meta {
+  name: Jobs list
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/jobs/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Unified job records (playbook runs). Use `?status=running` or `?job_template=<id>`.
+}

@@ -1,0 +1,47 @@
+meta {
+  name: Create personal access token (PAT)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/gateway/v1/tokens/
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+body:json {}
+
+script:post-response {
+  const body = res.body;
+  const t = body && (body.token || body.access_token);
+  if (res.status >= 200 && res.status < 300 && t) {
+    bru.setVar("token", t);
+  }
+}
+
+docs {
+  AAP 2.6 uses the *Platform Gateway* for OAuth2 / PAT issuance.
+  This issues a token with your username and password (HTTP Basic).
+  The token is stored in the environment variable `token` for subsequent
+  Bearer requests to `/api/gateway/v1/...`, `/api/controller/v2/...`,
+  and `/api/eda/v1/...`.
+
+  **Gateway-first on 2.6:** manage organizations, teams, users, and identity
+  (`/me`) via **`/api/gateway/v1/`** (see **gateway** and **system** folders).
+  Legacy controller RBAC mirrors remain under **legacy/** only for backward
+  compatibility testing.
+
+  Use *Hub → Create hub token* next to obtain `hubToken` for
+  `Authorization: Token …` on `/api/galaxy/v3/...`.
+
+  If your admin disabled gateway basic auth, create a PAT in the UI instead
+  and paste it into the `token` environment variable.
+
+  Reference: Red Hat AAP 2.6 Automation execution API overview — OAuth2 token authentication.
+}

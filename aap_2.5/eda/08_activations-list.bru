@@ -1,0 +1,20 @@
+meta {
+  name: Activations list
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/activations/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Rulebook activations (running or disabled). Extra vars live on the
+  activation object in current EDA releases — there is no separate `/extra_vars` route.
+}

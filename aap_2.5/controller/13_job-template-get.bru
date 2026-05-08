@@ -1,0 +1,19 @@
+meta {
+  name: Job template get by ID
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/job_templates/{{jobTemplateId}}/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Template detail including `related.launch` for the launch endpoint.
+}

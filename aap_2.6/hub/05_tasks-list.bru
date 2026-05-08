@@ -1,0 +1,20 @@
+meta {
+  name: Tasks list
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/galaxy/v3/tasks/
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{hubToken}}
+}
+
+docs {
+  Long-running hub operations (sync, upload, curate). If your installation
+  hides this route, delete this request or replace with the path from Hub OpenAPI.
+}

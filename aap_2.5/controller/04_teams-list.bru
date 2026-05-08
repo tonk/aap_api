@@ -1,0 +1,19 @@
+meta {
+  name: Teams list
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/teams/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  RBAC teams within organizations.
+}

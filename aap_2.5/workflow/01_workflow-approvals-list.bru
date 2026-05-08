@@ -1,0 +1,23 @@
+meta {
+  name: Workflow approvals list
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/workflow_approvals/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Pending and historical **workflow approval** steps. The list endpoint is
+  read-only; approve or deny with the dedicated POST sub-resources below.
+
+  Filter examples: `?status=pending`, workflow job context via related URLs
+  on each object.
+}

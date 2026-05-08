@@ -1,0 +1,20 @@
+meta {
+  name: Projects list
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/projects/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Rulebook project sources (Git, archives). In AAP 2.5, platform users/orgs
+  are managed through the gateway — not via EDA user CRUD in most installs.
+}

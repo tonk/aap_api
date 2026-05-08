@@ -1,0 +1,19 @@
+meta {
+  name: Config
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/config/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Public configuration snapshot exposed by the EDA API (feature flags, URLs, etc.).
+}

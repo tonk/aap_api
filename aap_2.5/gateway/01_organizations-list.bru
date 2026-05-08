@@ -1,0 +1,19 @@
+meta {
+  name: Organizations (gateway)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/gateway/v1/organizations/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Platform Gateway organization objects (AAP 2.5). Pagination uses `page` / `page_size` query params on most list endpoints.
+}

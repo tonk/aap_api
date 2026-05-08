@@ -1,0 +1,19 @@
+meta {
+  name: Organization by ID (gateway)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/gateway/v1/organizations/{{organizationId}}/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Detail view for a single gateway organization.
+}

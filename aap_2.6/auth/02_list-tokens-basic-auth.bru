@@ -1,0 +1,21 @@
+meta {
+  name: List tokens (Basic auth)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/gateway/v1/tokens/
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+docs {
+  Lists gateway tokens for the authenticated user using Basic auth.
+  Useful when you do not yet have a Bearer token.
+}

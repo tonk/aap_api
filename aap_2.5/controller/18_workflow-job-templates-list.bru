@@ -1,0 +1,19 @@
+meta {
+  name: Workflow job templates list
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/workflow_job_templates/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Workflow templates chaining multiple job / approval / sync nodes.
+}

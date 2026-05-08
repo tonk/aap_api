@@ -1,0 +1,19 @@
+meta {
+  name: Organizations list (controller)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/organizations/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Controller-side organization records (jobs, inventories, etc. hang off orgs).
+}

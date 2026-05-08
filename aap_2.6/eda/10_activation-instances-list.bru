@@ -1,0 +1,20 @@
+meta {
+  name: Activation instances list
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/activation-instances/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Historical or in-flight runs of an activation. Filter with query params as
+  supported by your EDA version (see OpenAPI).
+}

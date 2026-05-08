@@ -1,0 +1,20 @@
+meta {
+  name: Current user — gateway (me)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/gateway/v1/me/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Current authenticated principal from the **Platform Gateway** (preferred on
+  AAP 2.6). For the legacy controller user mirror, see **legacy → Controller me**.
+}

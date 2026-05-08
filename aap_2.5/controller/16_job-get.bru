@@ -1,0 +1,19 @@
+meta {
+  name: Job get by ID
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/jobs/{{jobId}}/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Job detail; `status`, `result_stdout_size`, and `related` links for events and stdout.
+}

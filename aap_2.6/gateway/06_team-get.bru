@@ -1,0 +1,19 @@
+meta {
+  name: Team by ID (gateway)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/gateway/v1/teams/{{teamId}}/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Detail for a single gateway team. Set `teamId` from **Teams list (gateway)**.
+}

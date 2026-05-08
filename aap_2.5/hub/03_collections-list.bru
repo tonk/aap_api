@@ -1,0 +1,21 @@
+meta {
+  name: Collections list
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/galaxy/v3/collections/
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Token {{hubToken}}
+}
+
+docs {
+  Published Ansible collections in the hub. Exact fields depend on repository
+  type (validated vs community sync). If this path 404s on your build, fetch
+  `/api/galaxy/v3/openapi.json` (when exposed) or browse the Hub UI API traces.
+}

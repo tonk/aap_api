@@ -1,0 +1,19 @@
+meta {
+  name: Dashboard
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/dashboard/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Summary counts and recent jobs shown on the controller dashboard.
+}

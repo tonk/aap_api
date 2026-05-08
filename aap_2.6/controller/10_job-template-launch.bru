@@ -1,0 +1,27 @@
+meta {
+  name: Launch job template
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/api/controller/v2/job_templates/{{jobTemplateId}}/launch/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+  }
+}
+
+docs {
+  Start a job from this template with an empty JSON object for defaults.
+  To pass overrides, add fields such as `limit`, `inventory`, `job_type`,
+  `credential`, `job_tags`, `skip_tags`, `extra_vars`.
+  Red Hat doc example: {"limit": "ansible"}
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Job templates list
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/job_templates/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Templates you can launch. Named URLs use `name++organization.name` (see settings `NAMED_URL_FORMATS`).
+}

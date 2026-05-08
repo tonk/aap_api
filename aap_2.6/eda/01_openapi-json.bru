@@ -1,0 +1,21 @@
+meta {
+  name: OpenAPI specification (JSON)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/openapi.json
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Download the live OpenAPI spec for your installed EDA version (paths and
+  schemas change between releases). Use `/openapi.yaml`, `/docs/`, or
+  `/redoc/` the same way under `/api/eda/v1/`.
+}

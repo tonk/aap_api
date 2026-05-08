@@ -1,0 +1,19 @@
+meta {
+  name: Event streams list
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/eda/v1/event-streams/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Inbound event stream definitions (webhooks, message bus connectors, etc.).
+}

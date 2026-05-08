@@ -1,0 +1,22 @@
+meta {
+  name: Controller me (legacy mirror)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/me/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Controller’s historical **`/me/`** mirror of the authenticated user. On AAP
+  2.6, prefer **system → Current user — gateway (me)** for platform identity.
+
+  Kept only for comparisons or tooling still pinned to controller responses.
+}

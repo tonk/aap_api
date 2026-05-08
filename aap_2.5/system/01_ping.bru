@@ -1,0 +1,20 @@
+meta {
+  name: Ping
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/ping/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Cluster / instance heartbeat status for automation controller.
+  Requires a valid Bearer token on AAP 2.5.
+}

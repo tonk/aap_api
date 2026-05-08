@@ -1,0 +1,22 @@
+meta {
+  name: Organizations (gateway)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/gateway/v1/organizations/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Platform Gateway organizations — **primary API on AAP 2.6** for org records.
+  Prefer this over `/api/controller/v2/organizations/` (see **legacy** folder).
+
+  Pagination commonly uses `page` / `page_size`; confirm with your gateway schema.
+}

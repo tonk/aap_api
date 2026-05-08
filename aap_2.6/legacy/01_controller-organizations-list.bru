@@ -1,0 +1,27 @@
+meta {
+  name: Organizations list (controller — deprecated)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/organizations/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  **Deprecated path on AAP 2.6.** Red Hat documents that organizations,
+  teams, and users should be managed through **`/api/gateway/v1/`** so changes
+  stay consistent across controller, Event-Driven Ansible, and other services.
+
+  Legacy controller CRUD here may still respond but can lag—often **up to ~15
+  minutes**—before other components see updates. Use **gateway → Organizations**
+  for new work.
+
+  Reference: [AAP 2.6 · Deprecated features](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6/html/release_notes/aap-2-6-deprecated-features).
+}

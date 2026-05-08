@@ -1,0 +1,19 @@
+meta {
+  name: Teams list (controller — deprecated)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/teams/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  **Deprecated path on AAP 2.6.** Use **gateway → Teams list** instead.
+}

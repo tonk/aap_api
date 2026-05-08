@@ -1,0 +1,19 @@
+meta {
+  name: Inventories list
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/inventories/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Inventories (static, constructed, etc.). Use `?organization=<id>` to narrow.
+}

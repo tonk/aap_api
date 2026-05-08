@@ -1,0 +1,26 @@
+meta {
+  name: Deny workflow step
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/deny/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "reason": "Rejected via API"
+  }
+}
+
+docs {
+  Denies the approval. Supply a `reason` string when your controller requires it.
+  Adjust the body to `{}` if your version treats reason as optional only.
+}

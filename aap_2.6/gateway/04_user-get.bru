@@ -1,0 +1,19 @@
+meta {
+  name: User by ID (gateway)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/gateway/v1/users/{{userId}}/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Detail for a single gateway user. Set `userId` from **Users list (gateway)**.
+}

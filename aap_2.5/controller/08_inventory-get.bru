@@ -1,0 +1,19 @@
+meta {
+  name: Inventory get by ID
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/inventories/{{inventoryId}}/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Inventory detail. `related.hosts` and `related.groups` for contents.
+}

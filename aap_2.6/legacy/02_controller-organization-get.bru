@@ -1,0 +1,20 @@
+meta {
+  name: Organization get by ID (controller — deprecated)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/organizations/{{organizationId}}/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  **Deprecated mirror on AAP 2.6.** Prefer **gateway → Organization by ID** with
+  gateway-scoped IDs. Numeric IDs may not align with gateway records.
+}

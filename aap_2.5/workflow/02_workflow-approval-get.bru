@@ -1,0 +1,20 @@
+meta {
+  name: Workflow approval get by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Inspect `status`, `reason` (if denied), timing fields, and `related.approve` /
+  `related.deny` hrefs for the POST endpoints.
+}

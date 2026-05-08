@@ -1,0 +1,28 @@
+meta {
+  name: Approve workflow step
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/approve/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+  }
+}
+
+docs {
+  Approves the pending workflow approval node. Many installs accept an empty
+  JSON object; some require `{"description": "optional note"}` — see your
+  controller version’s API browser.
+
+  Requires RBAC permission to approve the workflow.
+}
