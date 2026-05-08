@@ -41,9 +41,9 @@ Bruno picks up environment names from the **filename** (`local.bru` → **local*
 
 Use **`{{baseUrl}}`**, **`{{username}}`**, and **`{{password}}`** in requests as usual.
 
-**Editing on disk (`environments/*.bru`):** quote URLs that contain **`:`** (for example **`baseUrl: "https://aap.example.com"`**) so the `.bru` lexer keeps **`username`** / **`password`** and the rest of the block intact—especially on Bruno **3.x**.
+**Editing on disk (`environments/*.bru`):** quote **`baseUrl`** values that contain **`:`** (for example **`baseUrl: "https://aap.example.com"`**) so the `.bru` lexer keeps **`username`** / **`password`** and the rest of the block intact—especially on Bruno **3.x**. **`username`** and **`password`** normally **do not** need quotes (avoid **`"admin"`** / **`"changeme"`** in the stored value).
 
-**Editing in Bruno’s environment UI:** type **`baseUrl`** as plain text only—**`https://aap.ansiblelab.nl`**—with **no surrounding `"` characters** and **no trailing slash**. The quotes you see in git are Bru **syntax**, not part of the value. If you paste **`"https://…"`** into the UI, `{{baseUrl}}` expands with literal quotes and Basic-auth requests can degrade into malformed URLs such as **`http://"https://host"/api/gateway/v1/tokens/`**.
+**Editing in Bruno’s environment UI:** type **`baseUrl`**, **`username`**, and **`password`** as plain text—**no surrounding `"` characters**—and **no trailing slash** on **`baseUrl`**. Quotes around **`baseUrl`** in git are Bru **syntax**, not part of the value; literal **`"`** in **`username`**/**`password`**/`baseUrl` breaks interpolation (for example malformed URLs or Basic auth).
 
 **Secrets:** we do **not** ship `vars:secret [ … ]` blocks in git (secrets plus decryption bugs has historically hidden environments on reopen—see [discussion around Bruno decrypt fixes](https://github.com/usebruno/bruno/issues/3479)). After opening the collection, mark **`password`**, **`token`**, and **`hubToken`** as secrets in the Bruno UI when needed (that may add a **local-only** `vars:secret` stanza on disk).
 
@@ -64,9 +64,9 @@ Typically override **`baseUrl`**, **`username`**, **`password`**, generated **`t
 
 | Variable | Purpose |
 |----------|---------|
-| `baseUrl` | Platform URL, **no trailing slash**. In **`.bru`** files use quotes around `https://…`. In **Bruno’s UI**, enter the URL **without** quote characters. |
-| `username` | Login name for gateway Basic auth when minting a PAT (defaults to `admin`). |
-| `password` | Password for Basic auth when minting a PAT (defaults to `changeme` in git copies—change before use). Use Bruno’s secret toggle on **`production`** when storing real passwords. |
+| `baseUrl` | Platform URL, **no trailing slash**. Quote **`https://…`** in **`.bru`** files only (colon); **not** in Bruno’s UI value field. |
+| `username` | Gateway Basic-auth login—plain text, **no `"…"`** in the UI or stored value. |
+| `password` | Plain text (or Bruno secret store)—**no `"…"`** around the password value. |
 | `token` | **Platform Gateway** OAuth2 / personal access token (Bearer). Filled automatically by the create-token request, or paste from the UI. |
 | `hubToken` | **Private Automation Hub** token (`Authorization: Token …`). Filled by **Hub → Create hub API token**, or paste from Hub UI. |
 | `organizationId`, `userId`, `teamId` | Gateway **`/api/gateway/v1/`** path segments — on **`aap_2.6`** copy from **gateway** list/detail responses (IDs may differ from legacy controller keys). |
