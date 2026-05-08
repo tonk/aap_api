@@ -29,18 +29,38 @@ Browse **`https://<host>/api/gateway/v1/`** when your deployment exposes the HTM
 
 1. In Bruno: **Open Collection** (folder picker).
 2. Select **`aap_2.5`** or **`aap_2.6`**—the directory that contains **`bruno.json`** for that version.
-3. Pick an environment: **local** (templates with placeholder values) or **production** (secrets like password / hub token not stored in plain text).
+3. Pick an environment: **`local`** or **`production`** (each collection ships **`environments/local.bru`** and **`environments/production.bru`**; Bruno maps names from filenames).
 
-Environments live under **`environments/`** inside the collection you opened (for example `aap_2.5/environments/local.bru` or `aap_2.6/environments/local.bru`).
+Environment definitions live under **`environments/`** in the opened collection (`aap_2.5/environments/*.bru` or `aap_2.6/environments/*.bru`).
 
 ## Configure environments
 
-Edit **`environments/local.bru`** or **`environments/production.bru`** in the opened collection:
+Edit **`environments/local.bru`** for everyday lab defaults, or **`environments/production.bru`** when you want a second named profile (same variable keys—override **`baseUrl`**, **`username`**, **`password`**, tokens, and IDs for each deployment).
+
+Bruno picks up environment names from the **filename** (`local.bru` → **local**, `production.bru` → **production**). Do **not** add a top-level `meta { … }` block to these files—[official examples](https://docs.usebruno.com/variables/environment-variables) use **only** a `vars { … }` block, and Bruno **3.x** may refuse to load environments that include `meta`.
+
+**Secrets:** we do **not** ship `vars:secret [ … ]` blocks in git (secrets plus decryption bugs has historically hidden environments on reopen—see [discussion around Bruno decrypt fixes](https://github.com/usebruno/bruno/issues/3479)). After opening the collection, mark **`password`**, **`token`**, and **`hubToken`** as secrets in the Bruno UI when needed (that may add a **local-only** `vars:secret` stanza on disk).
+
+### `local.bru` vs `production.bru`
+
+Same keys by design; treat **`production`** as your alternate profile (real host, PATs, Hub tokens) and keep **`local`** aligned with disposable lab values.
+
+Start with the standard connection variables:
+
+### `local.bru` (defaults)
+
+The **`baseUrl`**, **`username`**, and **`password`** entries are prefilled for quickstarts (`https://aap.example.com`, `admin`, `changeme`)—change them before hitting a real system.
+
+### `production.bru`
+
+Typically override **`baseUrl`**, **`username`**, **`password`**, generated **`token`** / **`hubToken`**, and resource IDs for your deployment. Prefer Bruno’s secret toggle for sensitive values rather than committing them.
+
 
 | Variable | Purpose |
 |----------|---------|
-| `baseUrl` | Platform URL, **no trailing slash** (for example `https://aap.example.com`). |
-| `username` / `password` | Only needed for **Create personal access token** (Basic auth) and **List tokens (Basic auth)**. |
+| `baseUrl` | Platform URL, **no trailing slash** (defaults to `https://aap.example.com`; replace with your host). |
+| `username` | Login name for gateway Basic auth when minting a PAT (defaults to `admin`). |
+| `password` | Password for Basic auth when minting a PAT (defaults to `changeme` in git copies—change before use). Use Bruno’s secret toggle on **`production`** when storing real passwords. |
 | `token` | **Platform Gateway** OAuth2 / personal access token (Bearer). Filled automatically by the create-token request, or paste from the UI. |
 | `hubToken` | **Private Automation Hub** token (`Authorization: Token …`). Filled by **Hub → Create hub API token**, or paste from Hub UI. |
 | `organizationId`, `userId`, `teamId` | Gateway **`/api/gateway/v1/`** path segments — on **`aap_2.6`** copy from **gateway** list/detail responses (IDs may differ from legacy controller keys). |
@@ -48,7 +68,7 @@ Edit **`environments/local.bru`** or **`environments/production.bru`** in the op
 | `edaProjectId`, `edaActivationId`, `rulebookId` | EDA resource IDs. |
 | `workflowApprovalId` | Controller workflow approval step ID. |
 
-In **production**, `password` and `hubToken` are marked as secrets in Bruno so they are not committed as cleartext in the environment file (you still must avoid committing real production URLs and usernames if that is sensitive).
+Treat **`password`**, **`token`**, and **`hubToken`** as sensitive on real systems—toggle Bruno secrets locally or scrub values before pushing commits from **`production.bru`**.
 
 ## Recommended authentication flow
 
@@ -108,7 +128,7 @@ Some deployments expose **Private Automation Hub** on another DNS name than the 
 | Hub calls `401` | Run **Create hub API token** again; Hub tokens expire—paste a fresh token from the Hub UI if needed. |
 | `404` on a Hub path | Hub layout can vary slightly by version; use Hub’s OpenAPI or UI network tab to adjust the path in a duplicated `.bru` file. |
 | `403` on approve | User lacks permission on that workflow or approval step. |
-| RBAC looks stale on **`aap_2.6`** | Prefer **`gateway/`** for org/user/team changes; avoid **`legacy/`** controller mirrors except for compatibility checks—updates there may synchronize slowly to other services. |
+| Environment missing or empty picker (Bruno **3.x**) | Open the **`aap_2.5/`** or **`aap_2.6/`** folder that contains **`bruno.json`** (not the parent repo). Ensure environment `.bru` files contain **only** `vars { … }`—remove any stray `meta` blocks if you added them manually. Reload the collection or quit Bruno fully and reopen. Clear stale secrets: temporarily rename **`production.bru`**, confirm **`local`** appears, then restore—see [secret/decrypt issues](https://github.com/usebruno/bruno/issues/5154). |
 
 ## License / upstream
 
