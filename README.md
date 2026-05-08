@@ -134,6 +134,7 @@ Some deployments expose **Private Automation Hub** on another DNS name than the 
 | Hub calls `401` | Run **Create hub API token** again; Hub tokens expire—paste a fresh token from the Hub UI if needed. |
 | `404` on a Hub path | Hub layout can vary slightly by version; use Hub’s OpenAPI or UI network tab to adjust the path in a duplicated `.bru` file. |
 | `403` on approve | User lacks permission on that workflow or approval step. |
+| `"JSON parse error"` / **`Expecting value: line 1 column 1`** on **`POST …/tokens/`** | Bruno **3.x** must send a literal **`{}`** body with **`Content-Type: application/json`**. Ensure **`auth/01_create-personal-access-token`** uses the multiline **`body:json { { } }`** block (pull latest collection)—a one-line **`body:json {}`** can ship an empty body and the gateway rejects it. |
 | Environment missing or empty picker (Bruno **3.x**) | Open the **`aap_2.5/`** or **`aap_2.6/`** folder that contains **`bruno.json`** (not the parent repo). Ensure environment `.bru` files contain **only** `vars { … }`—remove any stray `meta` blocks if you added them manually. Reload the collection or quit Bruno fully and reopen. Clear stale secrets: temporarily rename **`production.bru`**, confirm **`local`** appears, then restore—see [secret/decrypt issues](https://github.com/usebruno/bruno/issues/5154). |
 
 ## License / upstream

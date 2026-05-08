@@ -15,7 +15,10 @@ auth:basic {
   password: {{password}}
 }
 
-body:json {}
+body:json {
+  {
+  }
+}
 
 script:post-response {
   const body = res.body;
@@ -46,6 +49,10 @@ docs {
   **Environment `baseUrl`:** In Bruno’s variable UI enter only `https://your-host`
   (no `"…"` wrappers, no trailing `/`). Quotes in `.bru` are syntax only—literal
   quotes in the stored value break URL interpolation.
+
+  Request body uses Bruno’s multiline empty JSON object form (`body:json { { } }`)
+  so Bruno **3.x** sends literal `{}`—a one-line `body:json {}` can yield an empty
+  body and trigger gateway JSON parse errors.
 
   Reference: Red Hat AAP 2.6 Automation execution API overview — OAuth2 token authentication.
 }
