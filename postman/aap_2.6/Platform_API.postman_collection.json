@@ -1,0 +1,1295 @@
+{
+  "info": {
+    "_postman_id": "b27e224d-a275-4131-8471-49a12bb224d4",
+    "name": "AAP 2.6 Platform API",
+    "description": "Imported from Bruno collection: aap_2.6",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "Create personal access token (PAT)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gateway/v1/tokens/"
+            },
+            "description": "AAP 2.6 uses the *Platform Gateway* for OAuth2 / PAT issuance.\n  This issues a token with your username and password (HTTP Basic).\n  The token is stored in the environment variable `token` for subsequent\n  Bearer requests to `/api/gateway/v1/...`, `/api/controller/v2/...`,\n  and `/api/eda/v1/...`.\n\n  **Gateway-first on 2.6:** manage organizations, teams, users, and identity\n  (`/me`) via **`/api/gateway/v1/`** (see **gateway** and **system** folders).\n  Legacy controller RBAC mirrors remain under **legacy/** only for backward\n  compatibility testing.\n\n  Use *Hub \u2192 Create hub token* next to obtain `hubToken` for\n  `Authorization: Token \u2026` on `/api/galaxy/v3/...`.\n\n  If your admin disabled gateway basic auth, create a PAT in the UI instead\n  and paste it into the `token` environment variable.\n\n  **Environment values:** In Bruno\u2019s UI enter **`baseUrl`**, **`username`**, and **`password`** without **`\"`** wrappers\u2014only **`baseUrl`** uses quotes **inside git-tracked `.bru`** files so `https://\u2026` parses correctly.\n\n  Request body uses Bruno\u2019s multiline empty JSON object form (`body:json { { } }`)\n  so Bruno **3.x** sends literal `{}`\u2014a one-line `body:json {}` can yield an empty\n  body and trigger gateway JSON parse errors.\n\n  Reference: Red Hat AAP 2.6 Automation execution API overview \u2014 OAuth2 token authentication.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{username}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const body = pm.response.json();",
+                  "const t = body && (body.token || body.access_token);",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && t) {",
+                  "    pm.environment.set(\"token\", t);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "List tokens (Basic auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gateway/v1/tokens/"
+            },
+            "description": "Lists gateway tokens for the authenticated user using Basic auth.\n  Useful when you do not yet have a Bearer token.",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{username}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "controller",
+      "item": [
+        {
+          "name": "Projects list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/projects/"
+            },
+            "description": "SCM projects that synchronize playbooks to the controller.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Project get by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/projects/{{projectId}}/"
+            },
+            "description": "Project detail; `related` includes updates, schedules, etc.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Inventories list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/inventories/"
+            },
+            "description": "Inventories (static, constructed, etc.). Use `?organization=<id>` to narrow.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Inventory get by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/inventories/{{inventoryId}}/"
+            },
+            "description": "Inventory detail. `related.hosts` and `related.groups` for contents.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hosts list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/hosts/"
+            },
+            "description": "Lists hosts across inventories. Filter with `?inventory=<id>`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Credentials list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/credentials/"
+            },
+            "description": "Credential objects (secrets are not returned in clear text). Filter by `credential_type` or organization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Credential get by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/credentials/{{credentialId}}/"
+            },
+            "description": "Credential metadata. Input fields are write-only on create/update.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Job templates list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/job_templates/"
+            },
+            "description": "Templates you can launch. Named URLs use `name++organization.name` (see settings `NAMED_URL_FORMATS`).",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Job template get by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/job_templates/{{jobTemplateId}}/"
+            },
+            "description": "Template detail including `related.launch` for the launch endpoint.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Launch job template",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/job_templates/{{jobTemplateId}}/launch/"
+            },
+            "description": "Start a job from this template with an empty JSON object for defaults.\n  To pass overrides, add fields such as `limit`, `inventory`, `job_type`,\n  `credential`, `job_tags`, `skip_tags`, `extra_vars`.\n  Red Hat doc example: {\"limit\": \"ansible\"}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Jobs list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/jobs/"
+            },
+            "description": "Unified job records (playbook runs). Use `?status=running` or `?job_template=<id>`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Job get by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/jobs/{{jobId}}/"
+            },
+            "description": "Job detail; `status`, `result_stdout_size`, and `related` links for events and stdout.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Job stdout (text)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/jobs/{{jobId}}/stdout/?format=txt_download"
+            },
+            "description": "Retrieves Ansible output for the job. `format` query options match controller docs\n  (`txt`, `txt_download`, `ansi`, `ansi_download`, `html`, \u2026).",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Workflow job templates list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/workflow_job_templates/"
+            },
+            "description": "Workflow templates chaining multiple job / approval / sync nodes.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Settings named URL formats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/settings/named_url/"
+            },
+            "description": "Read-only helper: patterns for human-readable named URLs (`job_templates`, `hosts`, \u2026).",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "eda",
+      "item": [
+        {
+          "name": "OpenAPI specification (JSON)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/openapi.json"
+            },
+            "description": "Download the live OpenAPI spec for your installed EDA version (paths and\n  schemas change between releases). Use `/openapi.yaml`, `/docs/`, or\n  `/redoc/` the same way under `/api/eda/v1/`.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/status/"
+            },
+            "description": "Service health / readiness-style endpoint for Event-Driven Ansible.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/config/"
+            },
+            "description": "Public configuration snapshot exposed by the EDA API (feature flags, URLs, etc.).",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Projects list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/projects/"
+            },
+            "description": "Rulebook project sources (Git, archives). In AAP 2.5, platform users/orgs\n  are managed through the gateway \u2014 not via EDA user CRUD in most installs.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Project get by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/projects/{{edaProjectId}}/"
+            },
+            "description": "Single project; `related` links point at rulebooks and other child objects.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Rulebooks list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/rulebooks/"
+            },
+            "description": "Discovered rulebooks from project sources, ready to bind to activations.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Rulebook get by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/rulebooks/{{rulebookId}}/"
+            },
+            "description": "Rulebook detail including rulesets and activation relationships.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Activations list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/activations/"
+            },
+            "description": "Rulebook activations (running or disabled). Extra vars live on the\n  activation object in current EDA releases \u2014 there is no separate `/extra_vars` route.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Activation get by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/activations/{{edaActivationId}}/"
+            },
+            "description": "Activation detail: decision environment, rulebook, restart count, status, etc.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Activation instances list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/activation-instances/"
+            },
+            "description": "Historical or in-flight runs of an activation. Filter with query params as\n  supported by your EDA version (see OpenAPI).",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Decision environments list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/decision-environments/"
+            },
+            "description": "Execution images (rulebook runner environments) available to activations.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "EDA credentials list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/eda-credentials/"
+            },
+            "description": "AAP 2.5 replaced the older `/credentials` route with `/eda-credentials`\n  for expanded credential types. Secret fields are not returned in responses.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Event streams list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/event-streams/"
+            },
+            "description": "Inbound event stream definitions (webhooks, message bus connectors, etc.).",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Current user (EDA)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/eda/v1/users/me/"
+            },
+            "description": "EDA **`users/me`** profile for the bearer identity. On **AAP 2.6**, treat\n  **system \u2192 Current user \u2014 gateway (me)** as the canonical platform identity;\n  this endpoint reflects EDA\u2019s view of the same principal.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "gateway",
+      "item": [
+        {
+          "name": "Organizations (gateway)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gateway/v1/organizations/"
+            },
+            "description": "Platform Gateway organizations \u2014 **primary API on AAP 2.6** for org records.\n  Prefer this over `/api/controller/v2/organizations/` (see **legacy** folder).\n\n  Pagination commonly uses `page` / `page_size`; confirm with your gateway schema.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Organization by ID (gateway)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gateway/v1/organizations/{{organizationId}}/"
+            },
+            "description": "Detail for a single gateway organization. Use gateway IDs from **Organizations (gateway)** \u2014 they may differ from legacy controller numeric IDs.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Users list (gateway)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gateway/v1/users/"
+            },
+            "description": "Platform Gateway users (recommended on AAP 2.6). Use this instead of\n  `/api/controller/v2/users/` so RBAC changes propagate without the delay that\n  legacy controller routes can introduce across platform components.\n\n  Filter examples often match Django-style lookups; confirm fields with your\n  gateway OpenAPI or browsable API.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "User by ID (gateway)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gateway/v1/users/{{userId}}/"
+            },
+            "description": "Detail for a single gateway user. Set `userId` from **Users list (gateway)**.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Teams list (gateway)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gateway/v1/teams/"
+            },
+            "description": "Platform Gateway teams (recommended on AAP 2.6). Prefer over\n  `/api/controller/v2/teams/` for consistent synchronization with the rest of\n  the platform.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Team by ID (gateway)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gateway/v1/teams/{{teamId}}/"
+            },
+            "description": "Detail for a single gateway team. Set `teamId` from **Teams list (gateway)**.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "hub",
+      "item": [
+        {
+          "name": "Create hub API token (from gateway PAT)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/galaxy/v3/auth/token/"
+            },
+            "description": "Exchanges a Platform Gateway PAT (`token` var) for a **Private Automation Hub**\n  token. The script stores it in `hubToken`. Subsequent Hub requests in this\n  collection use `Authorization: Token {{hubToken}}` (Galaxy NG style).\n\n  Run *auth/01_create-personal-access-token* first so `token` is populated.\n\n  If your Hub is on a **separate hostname**, duplicate this request with\n  `{{hubBaseUrl}}` (add that var locally) \u2014 some deployments split gateway and hub DNS.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const body = pm.response.json();",
+                  "const t = body && (body.token || body.access_token);",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && t) {",
+                  "    pm.environment.set(\"hubToken\", t);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Namespaces list",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{hubToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/galaxy/v3/namespaces/"
+            },
+            "description": "Collection namespaces. Galaxy NG paginates with `limit` / `offset` on many list views.\n\n  Requires `hubToken` from *Create hub API token*."
+          }
+        },
+        {
+          "name": "Collections list",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{hubToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/galaxy/v3/collections/"
+            },
+            "description": "Published Ansible collections in the hub. Exact fields depend on repository\n  type (validated vs community sync). If this path 404s on your build, fetch\n  `/api/galaxy/v3/openapi.json` (when exposed) or browse the Hub UI API traces."
+          }
+        },
+        {
+          "name": "Collection versions (plugin path)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{hubToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/galaxy/v3/plugin/ansible/content/ansible/collection_versions/"
+            },
+            "description": "Alternate list route used by some Galaxy NG / Pulp Ansible deployments for\n  individual collection versions. Remove or adjust if your hub uses only the\n  top-level `/collections/` view."
+          }
+        },
+        {
+          "name": "Tasks list",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{hubToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/galaxy/v3/tasks/"
+            },
+            "description": "Long-running hub operations (sync, upload, curate). If your installation\n  hides this route, delete this request or replace with the path from Hub OpenAPI."
+          }
+        }
+      ]
+    },
+    {
+      "name": "legacy",
+      "item": [
+        {
+          "name": "Organizations list (controller \u2014 deprecated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/organizations/"
+            },
+            "description": "**Deprecated path on AAP 2.6.** Red Hat documents that organizations,\n  teams, and users should be managed through **`/api/gateway/v1/`** so changes\n  stay consistent across controller, Event-Driven Ansible, and other services.\n\n  Legacy controller CRUD here may still respond but can lag\u2014often **up to ~15\n  minutes**\u2014before other components see updates. Use **gateway \u2192 Organizations**\n  for new work.\n\n  Reference: [AAP 2.6 \u00b7 Deprecated features](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6/html/release_notes/aap-2-6-deprecated-features).",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Organization get by ID (controller \u2014 deprecated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/organizations/{{organizationId}}/"
+            },
+            "description": "**Deprecated mirror on AAP 2.6.** Prefer **gateway \u2192 Organization by ID** with\n  gateway-scoped IDs. Numeric IDs may not align with gateway records.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Users list (controller \u2014 deprecated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/users/"
+            },
+            "description": "**Deprecated path on AAP 2.6.** Use **gateway \u2192 Users list** instead.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Teams list (controller \u2014 deprecated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/teams/"
+            },
+            "description": "**Deprecated path on AAP 2.6.** Use **gateway \u2192 Teams list** instead.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Controller me (legacy mirror)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/me/"
+            },
+            "description": "Controller\u2019s historical **`/me/`** mirror of the authenticated user. On AAP\n  2.6, prefer **system \u2192 Current user \u2014 gateway (me)** for platform identity.\n\n  Kept only for comparisons or tooling still pinned to controller responses.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "system",
+      "item": [
+        {
+          "name": "Ping",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/ping/"
+            },
+            "description": "Cluster / instance heartbeat status for automation controller.\n  Requires a valid Bearer token on AAP 2.6.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Current user \u2014 gateway (me)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/gateway/v1/me/"
+            },
+            "description": "Current authenticated principal from the **Platform Gateway** (preferred on\n  AAP 2.6). For the legacy controller user mirror, see **legacy \u2192 Controller me**.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/dashboard/"
+            },
+            "description": "Summary counts and recent jobs shown on the controller dashboard.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Settings \u2014 all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/settings/all/"
+            },
+            "description": "Full settings blob (may require elevated RBAC). Trimmed in some deployments.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "workflow",
+      "item": [
+        {
+          "name": "Workflow approvals list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/workflow_approvals/"
+            },
+            "description": "Pending and historical **workflow approval** steps. The list endpoint is\n  read-only; approve or deny with the dedicated POST sub-resources below.\n\n  Filter examples: `?status=pending`, workflow job context via related URLs\n  on each object.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Workflow approval get by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/"
+            },
+            "description": "Inspect `status`, `reason` (if denied), timing fields, and `related.approve` /\n  `related.deny` hrefs for the POST endpoints.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Approve workflow step",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/approve/"
+            },
+            "description": "Approves the pending workflow approval node. Many installs accept an empty\n  JSON object; some require `{\"description\": \"optional note\"}` \u2014 see your\n  controller version\u2019s API browser.\n\n  Requires RBAC permission to approve the workflow.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Deny workflow step",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/deny/"
+            },
+            "description": "Denies the approval. Supply a `reason` string when your controller requires it.\n  Adjust the body to `{}` if your version treats reason as optional only.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"reason\": \"Rejected via API\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Workflow jobs list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/controller/v2/workflow_jobs/"
+            },
+            "description": "Running or completed workflow jobs. Useful to find the approval id tied to\n  a workflow execution (`summary_fields` / `workflow_job_template`).",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
