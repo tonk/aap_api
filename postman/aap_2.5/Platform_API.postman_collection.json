@@ -1,10 +1,17 @@
 {
   "info": {
-    "_postman_id": "1e9e6b9a-5eda-489a-8195-801bbb73fb54",
+    "_postman_id": "b513a595-57f7-4448-90b3-566cf047344e",
     "name": "AAP 2.5 Platform API",
     "description": "Imported from Bruno collection: aap_2.5",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://your-aap-host.example.com",
+      "type": "string"
+    }
+  ],
   "item": [
     {
       "name": "auth",
@@ -14,9 +21,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/gateway/v1/tokens/"
-            },
+            "url": "{{baseUrl}}/api/gateway/v1/tokens/",
             "description": "AAP 2.5 uses the *Platform Gateway* for OAuth2 / PAT issuance.\n  This issues a token with your username and password (HTTP Basic).\n  The token is stored in the environment variable `token` for subsequent\n  Bearer requests to `/api/gateway/v1/...`, `/api/controller/v2/...`,\n  and `/api/eda/v1/...`. Use it next with *Hub \u2192 Create hub token* to\n  obtain `hubToken` for `Authorization: Token \u2026` on `/api/galaxy/v3/...`.\n\n  If your admin disabled gateway basic auth, create a PAT in the UI instead\n  and paste it into the `token` environment variable.\n\n  **Environment values:** In Bruno\u2019s UI enter **`baseUrl`**, **`username`**, and **`password`** without **`\"`** wrappers\u2014only **`baseUrl`** uses quotes **inside git-tracked `.bru`** files so `https://\u2026` parses correctly.\n\n  Request body uses Bruno\u2019s multiline empty JSON object form (`body:json { { } }`)\n  so Bruno **3.x** sends literal `{}`\u2014a one-line `body:json {}` can yield an empty\n  body and trigger gateway JSON parse errors.\n\n  Reference: Red Hat AAP 2.5 Automation execution API overview \u2014 OAuth2 token authentication.",
             "body": {
               "mode": "raw",
@@ -64,9 +69,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/gateway/v1/tokens/"
-            },
+            "url": "{{baseUrl}}/api/gateway/v1/tokens/",
             "description": "Lists gateway tokens for the authenticated user using Basic auth.\n  Useful when you do not yet have a Bearer token.",
             "auth": {
               "type": "basic",
@@ -95,9 +98,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/organizations/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/organizations/",
             "description": "Controller-side organization records (jobs, inventories, etc. hang off orgs).",
             "auth": {
               "type": "bearer",
@@ -116,9 +117,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/organizations/{{organizationId}}/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/organizations/{{organizationId}}/",
             "description": "Single organization detail including related links.",
             "auth": {
               "type": "bearer",
@@ -137,9 +136,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/users/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/users/",
             "description": "List users visible to your account. Filter e.g. `?username__icontains=admin`.",
             "auth": {
               "type": "bearer",
@@ -158,9 +155,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/teams/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/teams/",
             "description": "RBAC teams within organizations.",
             "auth": {
               "type": "bearer",
@@ -179,9 +174,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/projects/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/projects/",
             "description": "SCM projects that synchronize playbooks to the controller.",
             "auth": {
               "type": "bearer",
@@ -200,9 +193,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/projects/{{projectId}}/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/projects/{{projectId}}/",
             "description": "Project detail; `related` includes updates, schedules, etc.",
             "auth": {
               "type": "bearer",
@@ -221,9 +212,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/inventories/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/inventories/",
             "description": "Inventories (static, constructed, etc.). Use `?organization=<id>` to narrow.",
             "auth": {
               "type": "bearer",
@@ -242,9 +231,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/inventories/{{inventoryId}}/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/inventories/{{inventoryId}}/",
             "description": "Inventory detail. `related.hosts` and `related.groups` for contents.",
             "auth": {
               "type": "bearer",
@@ -263,9 +250,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/hosts/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/hosts/",
             "description": "Lists hosts across inventories. Filter with `?inventory=<id>`.",
             "auth": {
               "type": "bearer",
@@ -284,9 +269,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/credentials/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/credentials/",
             "description": "Credential objects (secrets are not returned in clear text). Filter by `credential_type` or organization.",
             "auth": {
               "type": "bearer",
@@ -305,9 +288,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/credentials/{{credentialId}}/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/credentials/{{credentialId}}/",
             "description": "Credential metadata. Input fields are write-only on create/update.",
             "auth": {
               "type": "bearer",
@@ -326,9 +307,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/job_templates/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/job_templates/",
             "description": "Templates you can launch. Named URLs use `name++organization.name` (see settings `NAMED_URL_FORMATS`).",
             "auth": {
               "type": "bearer",
@@ -347,9 +326,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/job_templates/{{jobTemplateId}}/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/job_templates/{{jobTemplateId}}/",
             "description": "Template detail including `related.launch` for the launch endpoint.",
             "auth": {
               "type": "bearer",
@@ -368,9 +345,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/job_templates/{{jobTemplateId}}/launch/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/job_templates/{{jobTemplateId}}/launch/",
             "description": "Start a job from this template with an empty JSON object for defaults.\n  To pass overrides, add fields such as `limit`, `inventory`, `job_type`,\n  `credential`, `job_tags`, `skip_tags`, `extra_vars`.\n  Red Hat doc example: {\"limit\": \"ansible\"}",
             "body": {
               "mode": "raw",
@@ -398,9 +373,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/jobs/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/jobs/",
             "description": "Unified job records (playbook runs). Use `?status=running` or `?job_template=<id>`.",
             "auth": {
               "type": "bearer",
@@ -419,9 +392,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/jobs/{{jobId}}/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/jobs/{{jobId}}/",
             "description": "Job detail; `status`, `result_stdout_size`, and `related` links for events and stdout.",
             "auth": {
               "type": "bearer",
@@ -440,9 +411,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/jobs/{{jobId}}/stdout/?format=txt_download"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/jobs/{{jobId}}/stdout/?format=txt_download",
             "description": "Retrieves Ansible output for the job. `format` query options match controller docs\n  (`txt`, `txt_download`, `ansi`, `ansi_download`, `html`, \u2026).",
             "auth": {
               "type": "bearer",
@@ -461,9 +430,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/workflow_job_templates/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/workflow_job_templates/",
             "description": "Workflow templates chaining multiple job / approval / sync nodes.",
             "auth": {
               "type": "bearer",
@@ -482,9 +449,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/settings/named_url/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/settings/named_url/",
             "description": "Read-only helper: patterns for human-readable named URLs (`job_templates`, `hosts`, \u2026).",
             "auth": {
               "type": "bearer",
@@ -508,9 +473,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/openapi.json"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/openapi.json",
             "description": "Download the live OpenAPI spec for your installed EDA version (paths and\n  schemas change between releases). Use `/openapi.yaml`, `/docs/`, or\n  `/redoc/` the same way under `/api/eda/v1/`.",
             "auth": {
               "type": "bearer",
@@ -529,9 +492,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/status/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/status/",
             "description": "Service health / readiness-style endpoint for Event-Driven Ansible.",
             "auth": {
               "type": "bearer",
@@ -550,9 +511,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/config/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/config/",
             "description": "Public configuration snapshot exposed by the EDA API (feature flags, URLs, etc.).",
             "auth": {
               "type": "bearer",
@@ -571,9 +530,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/projects/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/projects/",
             "description": "Rulebook project sources (Git, archives). In AAP 2.5, platform users/orgs\n  are managed through the gateway \u2014 not via EDA user CRUD in most installs.",
             "auth": {
               "type": "bearer",
@@ -592,9 +549,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/projects/{{edaProjectId}}/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/projects/{{edaProjectId}}/",
             "description": "Single project; `related` links point at rulebooks and other child objects.",
             "auth": {
               "type": "bearer",
@@ -613,9 +568,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/rulebooks/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/rulebooks/",
             "description": "Discovered rulebooks from project sources, ready to bind to activations.",
             "auth": {
               "type": "bearer",
@@ -634,9 +587,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/rulebooks/{{rulebookId}}/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/rulebooks/{{rulebookId}}/",
             "description": "Rulebook detail including rulesets and activation relationships.",
             "auth": {
               "type": "bearer",
@@ -655,9 +606,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/activations/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/activations/",
             "description": "Rulebook activations (running or disabled). Extra vars live on the\n  activation object in current EDA releases \u2014 there is no separate `/extra_vars` route.",
             "auth": {
               "type": "bearer",
@@ -676,9 +625,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/activations/{{edaActivationId}}/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/activations/{{edaActivationId}}/",
             "description": "Activation detail: decision environment, rulebook, restart count, status, etc.",
             "auth": {
               "type": "bearer",
@@ -697,9 +644,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/activation-instances/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/activation-instances/",
             "description": "Historical or in-flight runs of an activation. Filter with query params as\n  supported by your EDA version (see OpenAPI).",
             "auth": {
               "type": "bearer",
@@ -718,9 +663,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/decision-environments/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/decision-environments/",
             "description": "Execution images (rulebook runner environments) available to activations.",
             "auth": {
               "type": "bearer",
@@ -739,9 +682,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/eda-credentials/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/eda-credentials/",
             "description": "AAP 2.5 replaced the older `/credentials` route with `/eda-credentials`\n  for expanded credential types. Secret fields are not returned in responses.",
             "auth": {
               "type": "bearer",
@@ -760,9 +701,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/event-streams/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/event-streams/",
             "description": "Inbound event stream definitions (webhooks, message bus connectors, etc.).",
             "auth": {
               "type": "bearer",
@@ -781,9 +720,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/eda/v1/users/me/"
-            },
+            "url": "{{baseUrl}}/api/eda/v1/users/me/",
             "description": "EDA `users/me` profile for the bearer identity (may mirror gateway user).",
             "auth": {
               "type": "bearer",
@@ -807,9 +744,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/gateway/v1/organizations/"
-            },
+            "url": "{{baseUrl}}/api/gateway/v1/organizations/",
             "description": "Platform Gateway organization objects (AAP 2.5). Pagination uses `page` / `page_size` query params on most list endpoints.",
             "auth": {
               "type": "bearer",
@@ -828,9 +763,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/gateway/v1/organizations/{{organizationId}}/"
-            },
+            "url": "{{baseUrl}}/api/gateway/v1/organizations/{{organizationId}}/",
             "description": "Detail view for a single gateway organization.",
             "auth": {
               "type": "bearer",
@@ -854,9 +787,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/galaxy/v3/auth/token/"
-            },
+            "url": "{{baseUrl}}/api/galaxy/v3/auth/token/",
             "description": "Exchanges a Platform Gateway PAT (`token` var) for a **Private Automation Hub**\n  token. The script stores it in `hubToken`. Subsequent Hub requests in this\n  collection use `Authorization: Token {{hubToken}}` (Galaxy NG style).\n\n  Run *auth/01_create-personal-access-token* first so `token` is populated.\n\n  If your Hub is on a **separate hostname**, duplicate this request with\n  `{{hubBaseUrl}}` (add that var locally) \u2014 some deployments split gateway and hub DNS.",
             "body": {
               "mode": "raw",
@@ -905,9 +836,7 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/galaxy/v3/namespaces/"
-            },
+            "url": "{{baseUrl}}/api/galaxy/v3/namespaces/",
             "description": "Collection namespaces. Galaxy NG paginates with `limit` / `offset` on many list views.\n\n  Requires `hubToken` from *Create hub API token*."
           }
         },
@@ -922,9 +851,7 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/galaxy/v3/collections/"
-            },
+            "url": "{{baseUrl}}/api/galaxy/v3/collections/",
             "description": "Published Ansible collections in the hub. Exact fields depend on repository\n  type (validated vs community sync). If this path 404s on your build, fetch\n  `/api/galaxy/v3/openapi.json` (when exposed) or browse the Hub UI API traces."
           }
         },
@@ -939,9 +866,7 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/galaxy/v3/plugin/ansible/content/ansible/collection_versions/"
-            },
+            "url": "{{baseUrl}}/api/galaxy/v3/plugin/ansible/content/ansible/collection_versions/",
             "description": "Alternate list route used by some Galaxy NG / Pulp Ansible deployments for\n  individual collection versions. Remove or adjust if your hub uses only the\n  top-level `/collections/` view."
           }
         },
@@ -956,9 +881,7 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/galaxy/v3/tasks/"
-            },
+            "url": "{{baseUrl}}/api/galaxy/v3/tasks/",
             "description": "Long-running hub operations (sync, upload, curate). If your installation\n  hides this route, delete this request or replace with the path from Hub OpenAPI."
           }
         }
@@ -972,9 +895,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/ping/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/ping/",
             "description": "Cluster / instance heartbeat status for automation controller.\n  Requires a valid Bearer token on AAP 2.5.",
             "auth": {
               "type": "bearer",
@@ -993,9 +914,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/me/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/me/",
             "description": "Returns the controller user record for the authenticated principal.",
             "auth": {
               "type": "bearer",
@@ -1014,9 +933,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/dashboard/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/dashboard/",
             "description": "Summary counts and recent jobs shown on the controller dashboard.",
             "auth": {
               "type": "bearer",
@@ -1035,9 +952,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/settings/all/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/settings/all/",
             "description": "Full settings blob (may require elevated RBAC). Trimmed in some deployments.",
             "auth": {
               "type": "bearer",
@@ -1061,9 +976,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/workflow_approvals/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/workflow_approvals/",
             "description": "Pending and historical **workflow approval** steps. The list endpoint is\n  read-only; approve or deny with the dedicated POST sub-resources below.\n\n  Filter examples: `?status=pending`, workflow job context via related URLs\n  on each object.",
             "auth": {
               "type": "bearer",
@@ -1082,9 +995,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/",
             "description": "Inspect `status`, `reason` (if denied), timing fields, and `related.approve` /\n  `related.deny` hrefs for the POST endpoints.",
             "auth": {
               "type": "bearer",
@@ -1103,9 +1014,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/approve/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/approve/",
             "description": "Approves the pending workflow approval node. Many installs accept an empty\n  JSON object; some require `{\"description\": \"optional note\"}` \u2014 see your\n  controller version\u2019s API browser.\n\n  Requires RBAC permission to approve the workflow.",
             "body": {
               "mode": "raw",
@@ -1133,9 +1042,7 @@
           "request": {
             "method": "POST",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/deny/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/workflow_approvals/{{workflowApprovalId}}/deny/",
             "description": "Denies the approval. Supply a `reason` string when your controller requires it.\n  Adjust the body to `{}` if your version treats reason as optional only.",
             "body": {
               "mode": "raw",
@@ -1163,9 +1070,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/controller/v2/workflow_jobs/"
-            },
+            "url": "{{baseUrl}}/api/controller/v2/workflow_jobs/",
             "description": "Running or completed workflow jobs. Useful to find the approval id tied to\n  a workflow execution (`summary_fields` / `workflow_job_template`).",
             "auth": {
               "type": "bearer",

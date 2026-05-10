@@ -63,9 +63,7 @@ Bruno picks up environment names from the **filename** (`local.bru` → **local*
 
 Use **`{{baseUrl}}`**, **`{{username}}`**, and **`{{password}}`** in requests as usual.
 
-**Editing Bruno environments on disk (`environments/*.bru`):** quote **`baseUrl`** values that contain **`:`** (for example **`baseUrl: "https://aap.example.com"`**) so the `.bru` lexer keeps **`username`** / **`password`** and the rest of the block intact—especially on Bruno **3.x**. **`username`** and **`password`** normally **do not** need quotes (avoid **`"admin"`** / **`"changeme"`** in the stored value).
-
-**Editing in Bruno’s environment UI:** type **`baseUrl`**, **`username`**, and **`password`** as plain text—**no surrounding `"` characters**—and **no trailing slash** on **`baseUrl`**. Quotes around **`baseUrl`** in git are Bru **syntax**, not part of the value; literal **`"`** in **`username`**/**`password`**/`baseUrl` breaks interpolation (for example malformed URLs or Basic auth).
+**Editing Bruno environments on disk (`environments/*.bru`) or in the UI:** set **`baseUrl`** to a plain **`https://…`** URL—**no surrounding `"` characters**. Bruno often treats those quotes as part of the stored value, so requests become **`"https://host"...`** and fail. Use the same rule for **`username`** and **`password`** (no **`"`** wrappers). **No trailing slash** on **`baseUrl`**.
 
 **Secrets:** we do **not** rely on committing real secrets in git. After opening the Bruno collection, mark **`password`**, **`token`**, and **`hubToken`** as secrets in the Bruno UI when needed (that may add a **local-only** `vars:secret` stanza on disk). Some repo snapshots include `vars:secret` placeholders for **`password`** (and sometimes **`token`**) to document sensitive keys without values. Postman imports mark those variables with type **`secret`** where the Bruno file declares them.
 
@@ -77,7 +75,7 @@ Start with the standard connection variables:
 
 ### `local` environment (defaults)
 
-The **`baseUrl`**, **`username`**, and **`password`** entries are prefilled for quickstarts (`https://aap.example.com`, `admin`, `changeme`)—change them before hitting a real system.
+The **`baseUrl`**, **`username`**, and **`password`** entries are prefilled for quickstarts (`https://your-aap-host.example.com`, `admin`, `changeme`)—change them before hitting a real system.
 
 ### `production` environment
 
@@ -85,7 +83,7 @@ Typically override **`baseUrl`**, **`username`**, **`password`**, generated **`t
 
 | Variable | Purpose |
 |----------|---------|
-| `baseUrl` | Platform URL, **no trailing slash**. Quote **`https://…`** in **`.bru`** files only (colon); **not** in Bruno’s UI value field. |
+| `baseUrl` | Platform URL, **no trailing slash**. Plain **`https://…`** text in **`.bru`** files and Bruno—**no `"…"`** around the URL. |
 | `username` | Gateway Basic-auth login—plain text, **no `"…"`** in the UI or stored value. |
 | `password` | Plain text (or secret store)—**no `"…"`** around the password value. |
 | `token` | **Platform Gateway** OAuth2 / personal access token (Bearer). Filled automatically by the create-token request, or paste from the UI. |

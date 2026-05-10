@@ -242,12 +242,15 @@ def bru_to_request(path: Path) -> dict:
         if bt == "docs":
             description = inner.strip()
 
+    # Use a string URL (Collection v2.1 allows string | object). If we emit a URL object
+    # with `path` but no `host`, Postman rebuilds the request and drops {{baseUrl}},
+    # yielding invalid URIs like "http:///api/...".
     req: dict = {
         "name": name,
         "request": {
             "method": method,
             "header": headers,
-            "url": {"raw": url_raw},
+            "url": url_raw,
         },
     }
     if description:
@@ -311,6 +314,13 @@ def build_collection(collection_dir: Path, bruno_meta_name: str) -> dict:
             "description": f"Imported from Bruno collection: {collection_dir.name}",
             "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         },
+        "variable": [
+            {
+                "key": "baseUrl",
+                "value": "https://your-aap-host.example.com",
+                "type": "string",
+            },
+        ],
         "item": items,
     }
 

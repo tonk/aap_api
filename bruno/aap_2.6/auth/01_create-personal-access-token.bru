@@ -46,7 +46,7 @@ docs {
   If your admin disabled gateway basic auth, create a PAT in the UI instead
   and paste it into the `token` environment variable.
 
-  **Environment values:** In Bruno’s UI enter **`baseUrl`**, **`username`**, and **`password`** without **`"`** wrappers—only **`baseUrl`** uses quotes **inside git-tracked `.bru`** files so `https://…` parses correctly.
+  **Environment values:** set **`baseUrl`** to a plain **`https://…`** URL **without** surrounding **`"`** in **`environments/*.bru`** and in Bruno’s UI—quotes are often kept as part of the value and break **`{{baseUrl}}`**. Same for **`username`** and **`password`** (no **`"`** wrappers).
 
   Request body uses Bruno’s multiline empty JSON object form (`body:json { { } }`)
   so Bruno **3.x** sends literal `{}`—a one-line `body:json {}` can yield an empty
