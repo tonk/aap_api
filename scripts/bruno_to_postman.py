@@ -277,6 +277,8 @@ def build_collection(collection_dir: Path, bruno_meta_name: str) -> dict:
         rel = bru.relative_to(collection_dir)
         if rel.parts and rel.parts[0] == "environments":
             continue
+        if bru.name == "folder.bru":
+            continue
         folder = rel.parts[0] if len(rel.parts) > 1 else "root"
         data = bru_to_request(bru)
         seq = data.pop("_seq")

@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "b513a595-57f7-4448-90b3-566cf047344e",
+    "_postman_id": "2b7340e7-558f-43e2-b11c-1449e9ffc12b",
     "name": "AAP 2.5 Platform API",
     "description": "Imported from Bruno collection: aap_2.5",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -22,7 +22,7 @@
             "method": "POST",
             "header": [],
             "url": "{{baseUrl}}/api/gateway/v1/tokens/",
-            "description": "AAP 2.5 uses the *Platform Gateway* for OAuth2 / PAT issuance.\n  This issues a token with your username and password (HTTP Basic).\n  The token is stored in the environment variable `token` for subsequent\n  Bearer requests to `/api/gateway/v1/...`, `/api/controller/v2/...`,\n  and `/api/eda/v1/...`. Use it next with *Hub \u2192 Create hub token* to\n  obtain `hubToken` for `Authorization: Token \u2026` on `/api/galaxy/v3/...`.\n\n  If your admin disabled gateway basic auth, create a PAT in the UI instead\n  and paste it into the `token` environment variable.\n\n  **Environment values:** In Bruno\u2019s UI enter **`baseUrl`**, **`username`**, and **`password`** without **`\"`** wrappers\u2014only **`baseUrl`** uses quotes **inside git-tracked `.bru`** files so `https://\u2026` parses correctly.\n\n  Request body uses Bruno\u2019s multiline empty JSON object form (`body:json { { } }`)\n  so Bruno **3.x** sends literal `{}`\u2014a one-line `body:json {}` can yield an empty\n  body and trigger gateway JSON parse errors.\n\n  Reference: Red Hat AAP 2.5 Automation execution API overview \u2014 OAuth2 token authentication.",
+            "description": "AAP 2.5 uses the *Platform Gateway* for OAuth2 / PAT issuance.\n  This issues a token with your username and password (HTTP Basic).\n  The token is stored in the environment variable `token` for subsequent\n  Bearer requests to `/api/gateway/v1/...`, `/api/controller/v2/...`,\n  and `/api/eda/v1/...`. Use it next with *Hub \u2192 Create hub token* to\n  obtain `hubToken` for `Authorization: Token \u2026` on `/api/galaxy/v3/...`.\n\n  If your admin disabled gateway basic auth, create a PAT in the UI instead\n  and paste it into the `token` environment variable.\n\n  **Environment values:** set **`baseUrl`** to a plain **`https://\u2026`** URL **without** surrounding **`\"`** in **`environments/*.bru`** and in Bruno\u2019s UI\u2014quotes are often kept as part of the value and break **`{{baseUrl}}`**. Same for **`username`** and **`password`** (no **`\"`** wrappers).\n\n  Request body uses Bruno\u2019s multiline empty JSON object form (`body:json { { } }`)\n  so Bruno **3.x** sends literal `{}`\u2014a one-line `body:json {}` can yield an empty\n  body and trigger gateway JSON parse errors.\n\n  Reference: Red Hat AAP 2.5 Automation execution API overview \u2014 OAuth2 token authentication.",
             "body": {
               "mode": "raw",
               "raw": "{\n  }",
